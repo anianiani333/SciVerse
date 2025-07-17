@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Your Cart - SciVerse{% endblock %}
+{% block content %}
+<h1>Your Cart</h1>
+
+{% if items %}
+    <table class="cart-table">
+        <thead>
+            <tr>
+                <th>Book</th>
+                <th>Description</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>
+                    <img src="{{ url_for('static', filename='uploads/' ~ item.book.image_file) }}" alt="{{ item.book.title }}" class="cart-book-img" />
+                    <strong>{{ item.book.title }}</strong>
+                </td>
+                <td>
+                    {{ item.book.description[:100] }}
+                    {% if item.book.description|length > 100 %}...{% endif %}
+                </td>
+                <td>
+                    <a href="{{ url_for('routes.delete_from_cart', item_id=item.id) }}" class="btn btn-danger">Remove</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p><strong>Shipping Address:</strong> {{ current_user.address }}</p>
+
+    <form method="POST" action="{{ url_for('routes.checkout') }}">
+        <button type="submit" class="btn">Checkout</button>
+        <a href="{{ url_for('routes.index') }}" class="btn btn-secondary">Return to Main Page</a>
+    </form>
+{% else %}
+    <p>Your cart is empty. Add books to your cart from the <a href="{{ url_for('routes.index') }}">main page</a>.</p>
+{% endif %}
+{% endblock %}

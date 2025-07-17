@@ -1,0 +1,50 @@
+<!-- book_detail.html -->
+{% extends "base.html" %}
+{% block title %}{{ book.title }} - SciVerse{% endblock %}
+{% block content %}
+<h1>{{ book.title }}</h1>
+<div class="book-detail">
+    <img src="{{ url_for('static', filename='uploads/' ~ book.image_file) }}" alt="{{ book.title }}" />
+    <p>{{ book.description }}</p>
+</div>
+
+<h3>Comments</h3>
+<div class="comments-section">
+    {% if current_user.is_authenticated %}
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            {{ form.content(rows=3, class="input-field") }}
+            <button type="submit" class="btn">Post Comment</button>
+        </form>
+    {% else %}
+        <p><a href="{{ url_for('routes.login') }}">Log in</a> to post a comment.</p>
+    {% endif %}
+
+    {% for comment in book.comments|sort(attribute='timestamp', reverse=true) %}
+    <div class="comment">
+        <div class="comment-header">
+            <strong>{{ comment.author.username }}</strong> -
+            <small>{{ comment.timestamp.strftime('%b %d, %Y %H:%M') }}</small>
+            {% if current_user.is_authenticated and (comment.author == current_user or current_user.is_admin) %}
+                <a href="{{ url_for('routes.delete_comment', comment_id=comment.id) }}" class="delete-link" title="Delete comment">🗑️</a>
+            {% endif %}
+        </div>
+
+        <div class="comment-body">
+            <p>{{ comment.content }}</p>
+        </div>
+
+        <div class="comment-actions">
+            <span>Likes: {{ comment.likes_count }}</span>
+            {% if current_user.is_authenticated %}
+                {% if comment.liked_by_user(current_user) %}
+                    <a href="{{ url_for('routes.unlike_comment', comment_id=comment.id) }}">💔 Unlike</a>
+                {% else %}
+                    <a href="{{ url_for('routes.like_comment', comment_id=comment.id) }}">❤️ Like</a>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

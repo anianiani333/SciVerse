@@ -1,0 +1,33 @@
+<!-- register.html -->
+{% extends "base.html" %}
+
+{% block title %}Register - SciVerse{% endblock %}
+
+{% block content %}
+  <h2>Create an Account</h2>
+  <form method="POST" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    
+    <label for="username">Username</label>
+    {{ form.username(class="input-field", id="username") }}
+    
+    <label for="email">Email</label>
+    {{ form.email(class="input-field", id="email") }}
+    
+    <label for="phone">Phone (Optional)</label>
+    {{ form.phone(class="input-field", id="phone") }}
+    
+    <label for="password">Password</label>
+    {{ form.password(class="input-field", id="password") }}
+    
+    <label for="confirm_password">Confirm Password</label>
+    {{ form.confirm_password(class="input-field", id="confirm_password") }}
+    
+    <label for="profile_pic">Profile Picture (Optional)</label>
+    {{ form.profile_pic(class="input-field", id="profile_pic") }}
+    
+    <button type="submit" class="btn">Register</button>
+  </form>
+
+  <p>Already have an account? <a href="{{ url_for('routes.login') }}">Click to login here!</a>.</p>
+{% endblock %}

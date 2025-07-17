@@ -1,0 +1,26 @@
+<!-- login.html -->
+
+{% extends "base.html" %}
+
+{% block title %}Login - SciVerse{% endblock %}
+
+{% block content %}
+  <h2>Login</h2>
+  <form method="POST">
+    {{ form.hidden_tag() }}
+
+    <label for="email">Email</label>
+    {{ form.email(class="input-field", id="email") }}
+
+    <label for="password">Password</label>
+    {{ form.password(class="input-field", id="password") }}
+
+    <label>
+      {{ form.remember() }} Remember Me
+    </label>
+
+    <button type="submit" class="btn">Login</button>
+  </form>
+
+  <p>Don’t have an account? <a href="{{ url_for('routes.register') }}">Click and register here!</a>.</p>
+{% endblock %}

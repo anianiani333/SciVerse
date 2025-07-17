@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Browse Books - SciVerse{% endblock %}
+
+{% block content %}
+<h1>All Books</h1>
+
+<div class="book-list">
+    {% for book in pagination.items %}
+        <div class="book-card">
+            <img src="{{ url_for('static', filename='uploads/' ~ book.image_file) }}" alt="{{ book.title }}">
+            <div class="book-info">
+                <h2>
+                    <a href="{{ url_for('routes.view_book', book_id=book.id) }}">
+                        {{ book.title }}
+                    </a>
+                </h2>
+                <p>
+                    {{ book.description[:200] }}
+                    {% if book.description|length > 200 %}...{% endif %}
+                </p>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<div class="pagination">
+    {% if pagination.has_prev %}
+        <a href="{{ url_for('routes.paginated_books', page=pagination.prev_num) }}">&laquo; Prev</a>
+    {% endif %}
+
+    <span>Page {{ pagination.page }} of {{ pagination.pages }}</span>
+
+    {% if pagination.has_next %}
+        <a href="{{ url_for('routes.paginated_books', page=pagination.next_num) }}">Next &raquo;</a>
+    {% endif %}
+</div>
+{% endblock %}

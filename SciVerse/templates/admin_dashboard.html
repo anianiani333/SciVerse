@@ -1,0 +1,28 @@
+<!-- admin_dashboard -->
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - SciVerse{% endblock %}
+
+{% block content %}
+  <h1>Admin Dashboard</h1>
+
+  <p>Welcome, {{ current_user.username }}. Use the controls below to manage books and comments.</p>
+
+  <div class="admin-actions">
+      <a href="{{ url_for('routes.add_book') }}" class="btn">Add New Book</a>
+      <a href="{{ url_for('routes.index') }}" class="btn">View Books</a>
+      <!-- More admin controls can go here -->
+  </div>
+
+  <h2>Recent Comments</h2>
+  <ul class="admin-comment-list">
+    {% for comment in comments %}
+      <li>
+          <strong>{{ comment.author.username }}</strong> on
+          <em>{{ comment.book.title }}</em>:
+          "{{ comment.content[:50] }}{% if comment.content|length > 50 %}...{% endif %}"
+          <a href="{{ url_for('routes.delete_comment', comment_id=comment.id) }}" class="delete-link">Delete</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}

@@ -1,0 +1,21 @@
+<!-- add_book.html -->
+{% extends "base.html" %}
+{% block title %}Add Book - SciVerse{% endblock %}
+
+{% block content %}
+<h2>Add a New Book</h2>
+<form method="POST" enctype="multipart/form-data">
+  {{ form.hidden_tag() }}
+  
+  <label for="title">Title</label>
+  {{ form.title(class="input-field", id="title") }}
+
+  <label for="description">Description</label>
+  {{ form.description(class="input-field", id="description") }}
+
+  <label for="image_file">Cover Image</label>
+  {{ form.image_file(class="input-field", id="image_file") }}
+
+  <button type="submit" class="btn">Add Book</button>
+</form>
+{% endblock %}

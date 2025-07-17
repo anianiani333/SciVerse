@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Your Orders - SciVerse{% endblock %}
+
+{% block content %}
+<h1>Your Orders</h1>
+
+{% if orders %}
+    {% for order in orders %}
+        <div class="order-box">
+            <h3>
+                Order #{{ order.id }}
+                <small>({{ order.timestamp.strftime('%b %d, %Y') }})</small>
+            </h3>
+            <p>Status: <strong>{{ order.status }}</strong></p>
+            <ul>
+                {% for item in order.items %}
+                    <li>
+                        <img src="{{ url_for('static', filename='uploads/' ~ item.book.image_file) }}"
+                             alt="book cover"
+                             class="order-img">
+                        {{ item.book.title }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>You haven't placed any orders yet.
+       Browse the <a href="{{ url_for('routes.index') }}">main page</a> to start shopping.</p>
+{% endif %}
+{% endblock %}

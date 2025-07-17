@@ -1,0 +1,29 @@
+<!-- index.html -->
+{% extends "base.html" %}
+{% block title %}Home - SciVerse{% endblock %}
+{% block content %}
+<h1>Welcome to the SciVerse</h1>
+
+<div class="book-list">
+    {% for book in books %}
+        <div class="book-card">
+            <img src="{{ url_for('static', filename='uploads/' ~ book.image_file) }}" alt="{{ book.title }}" />
+            <div class="book-info">
+                <h2>
+                    <a href="{{ url_for('routes.view_book', book_id=book.id) }}">
+                        {{ book.title }}
+                    </a>
+                </h2>
+                <p>{{ book.description[:200] }}{% if book.description|length > 200 %}...{% endif %}</p>
+
+                <!-- ✅ Add to Cart Button -->
+                <form method="POST" action="{{ url_for('routes.add_to_cart', book_id=book.id) }}">
+                    <button type="submit" class="btn btn-success">Add to Cart</button>
+                </form>
+            </div>
+        </div>
+    {% else %}
+        <p>No books found. Admin, please add some.</p>
+    {% endfor %}
+</div>
+{% endblock %}

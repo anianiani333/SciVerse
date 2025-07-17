@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Search Results - SciVerse{% endblock %}
+
+{% block content %}
+<h1>Search Results for "{{ query }}"</h1>
+
+{% if books %}
+    <div class="book-list">
+        {% for book in books %}
+            <div class="book-card">
+                <img src="{{ url_for('static', filename='uploads/' ~ book.image_file) }}" alt="{{ book.title }}">
+                <div class="book-info">
+                    <h2>
+                        <a href="{{ url_for('routes.view_book', book_id=book.id) }}">
+                            {{ book.title }}
+                        </a>
+                    </h2>
+                    <p>
+                        {{ book.description[:200] }}
+                        {% if book.description|length > 200 %}...{% endif %}
+                    </p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No results found for "{{ query }}".</p>
+{% endif %}
+{% endblock %}
